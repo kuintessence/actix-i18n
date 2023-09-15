@@ -14,6 +14,7 @@ async fn main() -> io::Result<()> {
     HttpServer::new(move || {
         let resources = I18NResources::builder()
             .add_path("resources")
+            .use_isolating(false)
             .build()
             .unwrap();
 

@@ -26,6 +26,7 @@ pub struct I18NResourcesBuilder {
     resources: Vec<(String, String)>,
     default_language: LanguageIdentifier,
     strategy: NegotiationStrategy,
+    use_isolating: bool,
 }
 
 impl I18NResourcesBuilder {
@@ -101,6 +102,15 @@ impl I18NResourcesBuilder {
         self
     }
 
+    /// Sets the isolating using.
+    ///
+    /// Default is `true`.
+    #[must_use]
+    pub fn use_isolating(mut self, flag: bool) -> Self {
+        self.use_isolating = flag;
+        self
+    }
+
     /// Consumes this builder and returns a [`I18NResources`] object.
     pub fn build(self) -> Result<I18NResources, I18NError> {
         let mut bundles = HashMap::new();
@@ -126,7 +136,10 @@ impl I18NResourcesBuilder {
                 available_languages: bundles.keys().cloned().collect(),
                 bundles: bundles
                     .into_iter()
-                    .map(|(key, value)| (key, Arc::new(value)))
+                    .map(|(key, mut value)| {
+                        value.set_use_isolating(self.use_isolating);
+                        (key, Arc::new(value))
+                    })
                     .collect(),
                 default_language: self.default_language,
                 strategy: self.strategy,
@@ -190,6 +203,7 @@ impl I18NResources {
             resources: vec![],
             default_language: langid!("en-US"),
             strategy: NegotiationStrategy::Filtering,
+            use_isolating: true,
         }
     }
 

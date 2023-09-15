@@ -2,7 +2,7 @@
 name = "actix-i18n"
 version = "0.1.0"
 edition = "2021"
-authors = ["Collide <three-dim-sky@foxmail.com>"]
+authors = ["Collide <three-dim-sky@foxmail.com>", "zooeywm <zooeywm@gmail.com>"]
 description = "I18N support for Actix Web"
 keywords = ["actix", "web", "i18n"]
 categories = ["internationalization", "web-programming::http-server"]
